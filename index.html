@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <p>
+        <label>Add Name (One per line)</label>
+    </p>
+    <p>
+    <textarea id="names" rows="10" cols="20">Mark
+Bev
+Yuan
+PJ
+Jane
+Bill
+John
+Pat
+Tony
+Lerma</textarea>
+    </p>
+    <p>
+        <label>Select Number of Teams</label>
+        <select id="num-teams">
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+    </p>
+    <p>
+        <button id="generate-teams">Generate</button>
+    </p>
+    <br>
+    <p id="generated-teams"></p>
+    <script type="text/javascript">
+        var button = document.getElementById('generate-teams'),
+            numTeams = document.getElementById('num-teams'),
+            members = document.getElementById('names'),
+            generatedTeams = document.getElementById('generated-teams');
+
+
+        button.addEventListener('click', function() {
+            
+            generatedTeams.innerHTML = '';
+            
+            var alpha = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
+                teams = {},
+                teamMember = members.value.split('\n').length ? members.value.split('\n') : [],
+                totalTeamMember = Math.floor(teamMember.length / numTeams.value);
+            
+            // Validation
+            if(teamMember.length < numTeams.value) {
+                alert('Team members must be greater than the number of teams');
+                return;
+            }
+            
+            // Teams
+            for(var ctr = 0; ctr < numTeams.value; ctr++) {
+               var tempArr = [];
+                
+                // Team Members
+                for(var i = 0; i < totalTeamMember; i++) {
+                    var member = teamMember.splice(Math.floor(Math.random() * teamMember.length), 1);
+                    tempArr.push(member[0]);
+                }
+                teams[alpha[ctr]] = tempArr;
+            }
+            
+            if(teamMember.length) {
+                teams[alpha[Math.floor(Math.random() * numTeams.value)]].push(teamMember[0]);
+            }
+            for(var prop in teams) {
+                if(teams.hasOwnProperty(prop)) {
+                    console.log(teams[prop]);
+                    var teamName = '<dt>Team ' + prop + '</dt>',
+                        memberList = '';
+                    Array.prototype.forEach.call(teams[prop], function(member) {
+                        console.log(arguments);
+                        memberList += '<dd>' + member + '</dd>';
+                    });
+                    teamName += memberList
+                    generatedTeams.innerHTML += '<dl>' + teamName + '</dl>';
+                }
+            }
+        });
+
+
+    </script>
+</body>
+</html>
