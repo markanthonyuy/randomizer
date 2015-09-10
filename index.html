@@ -1,91 +1,118 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>Team Generator</title>
+    <style>
+        *, *::before, *::after { padding: 0; margin: 0; box-sizing: border-box; font-family: 'arial' }
+        .main-wrap { width: 800px; margin: 30px auto; }
+        .input-container { margin: 10px 0 10px 0; }
+        textarea, button { padding: 10px; font-size: 16px; }
+        .team-list { padding: 10px; background: #efefef; margin-bottom: 10px; border: 1px solid #ccc; }
+        .team-list dt { font-weight: bold; font-size: 24px; margin-bottom: 5px; }
+        .team-list dd { margin-left: 20px; font-size: 16px; padding: 2px; }
+    </style>
 </head>
 <body>
-    <p>
-        <label>Add Name (One per line)</label>
-    </p>
-    <p>
-    <textarea id="names" rows="10" cols="20">Mark
-Bev
-Yuan
+    <div class="main-wrap">
+        <h2>Random Team Generator</h2>
+        <p class="input-container">
+            <label>Add Name (One per line)</label>
+        </p>
+        <p class="input-container">
+<textarea id="names" rows="10" cols="20">
+Tony
+Lerma
 PJ
 Jane
+Mark
+Bev
+Yuan
 Bill
 John
-Pat
-Tony
-Lerma</textarea>
-    </p>
-    <p>
-        <label>Select Number of Teams</label>
-        <select id="num-teams">
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select>
-    </p>
-    <p>
-        <button id="generate-teams">Generate</button>
-    </p>
-    <br>
-    <p id="generated-teams"></p>
-    <script type="text/javascript">
-        var button = document.getElementById('generate-teams'),
-            numTeams = document.getElementById('num-teams'),
-            members = document.getElementById('names'),
-            generatedTeams = document.getElementById('generated-teams');
+Pat</textarea>
+        </p>
+        <p class="input-container">
+            <label>Select Number of Teams: </label>
+            <select id="num-teams">
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+            </select>
+        </p>
+        <p class="input-container">
+            <label>Select Team Names: </label>
+            <select id="team-names">
+                <option value="alphabet">Alphabet</option>
+                <option value="number">Number</option>
+                <option value="color">Color</option>
+                <option value="dota">Dota Heroes</option>
+            </select>
+        </p>
+        <p class="input-container">
+            <button id="generate-teams">Generate</button>
+        </p>
+        <br>
+        <p id="generated-teams"></p>
+    </div>
+    <script>
+        (function() {
+            var button = document.getElementById('generate-teams'),
+                numTeams = document.getElementById('num-teams'),
+                teamNames = document.getElementById('team-names'),
+                members = document.getElementById('names'),
+                generatedTeams = document.getElementById('generated-teams');
 
+            button.addEventListener('click', function() {
+                generatedTeams.innerHTML = '';
+                var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
+                    number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    color = ['BLUE', 'RED', 'GREEN', 'YELLOW', 'ORANGE', 'VIOLET', 'PINK', 'GRAY', 'WHITE', 'BLACK'],
+                    dota = ['RAZOR', 'LINA', 'CLINKZ', 'TINY', 'ZUES', 'TUSK', 'PUCK', 'SLARK', 'LYCAN', 'AXE'],
+                    teamNameToUse = (teamNames.value === 'alphabet') ? alphabet :
+                        (teamNames.value === 'number') ? number :
+                        (teamNames.value === 'color') ? color : dota,
+                    teams = {},
+                    teamMember = members.value.split('\n').length ? members.value.split('\n') : [],
+                    totalTeamMember = Math.floor(teamMember.length / numTeams.value);
 
-        button.addEventListener('click', function() {
-            
-            generatedTeams.innerHTML = '';
-            
-            var alpha = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
-                teams = {},
-                teamMember = members.value.split('\n').length ? members.value.split('\n') : [],
-                totalTeamMember = Math.floor(teamMember.length / numTeams.value);
-            
-            // Validation
-            if(teamMember.length < numTeams.value) {
-                alert('Team members must be greater than the number of teams');
-                return;
-            }
-            
-            // Teams
-            for(var ctr = 0; ctr < numTeams.value; ctr++) {
-               var tempArr = [];
-                
-                // Team Members
-                for(var i = 0; i < totalTeamMember; i++) {
-                    var member = teamMember.splice(Math.floor(Math.random() * teamMember.length), 1);
-                    tempArr.push(member[0]);
+                // Validation
+                if(teamMember.length < numTeams.value) {
+                    alert('Team members must be greater than the number of teams');
+                    return;
                 }
-                teams[alpha[ctr]] = tempArr;
-            }
-            
-            if(teamMember.length) {
-                teams[alpha[Math.floor(Math.random() * numTeams.value)]].push(teamMember[0]);
-            }
-            for(var prop in teams) {
-                if(teams.hasOwnProperty(prop)) {
-                    console.log(teams[prop]);
-                    var teamName = '<dt>Team ' + prop + '</dt>',
-                        memberList = '';
-                    Array.prototype.forEach.call(teams[prop], function(member) {
-                        console.log(arguments);
-                        memberList += '<dd>' + member + '</dd>';
-                    });
-                    teamName += memberList
-                    generatedTeams.innerHTML += '<dl>' + teamName + '</dl>';
+
+                // Teams
+                for(var ctr = 0; ctr < numTeams.value; ctr++) {
+                   var tempArr = [];
+                    
+                    // Team Members
+                    for(var i = 0; i < totalTeamMember; i++) {
+                        var member = teamMember.splice(Math.floor(Math.random() * teamMember.length), 1);
+                        tempArr.push(member[0]);
+                    }
+                    teams[teamNameToUse[ctr]] = tempArr;
                 }
-            }
-        });
-
-
+                if(teamMember.length) {
+                    teams[teamNameToUse[Math.floor(Math.random() * numTeams.value)]].push(teamMember[0]);
+                }
+                for(var prop in teams) {
+                    if(teams.hasOwnProperty(prop)) {
+                        console.log(teams[prop]);
+                        var teamName = '<dt>Team ' + prop + '</dt>',
+                            memberList = '';
+                        Array.prototype.forEach.call(teams[prop], function(member) {
+                            console.log(arguments);
+                            memberList += '<dd>' + member + '</dd>';
+                        });
+                        teamName += memberList
+                        generatedTeams.innerHTML += '<dl class="team-list">' + teamName + '</dl>';
+                    }
+                }
+            });
+        })();
     </script>
 </body>
 </html>
