@@ -10,9 +10,11 @@
         .team-list { padding: 10px; background: #efefef; margin-bottom: 10px; border: 1px solid #ccc; }
         .team-list dt { font-weight: bold; font-size: 24px; margin-bottom: 5px; }
         .team-list dd { margin-left: 20px; font-size: 16px; padding: 2px; }
+        .small { font-size: 12px; }
 
         @media (max-width: 800px) {
             .main-wrap { width: 100%; padding: 10px; }
+            .small { display: block; }
             select { padding: 5px; display: block; width: 100%; }
             textarea, button { padding: 10px; font-size: 16px; width: 100%; }
         }
@@ -20,7 +22,7 @@
 </head>
 <body>
     <div class="main-wrap">
-        <h2>Randomizer - Random Team Generator</h2>
+        <h2>Randomizer - Random Team Generator <i class="small">by: <a href="/">markanthonyuy.com</a></i></h2>
         <hr>
         <p class="input-container">
             <label>Add Name (One per line)</label>
