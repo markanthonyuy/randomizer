@@ -107,16 +107,18 @@ Pat</textarea>
                     }
                     teams[teamNameToUse[ctr]] = tempArr;
                 }
+                
                 if(teamMember.length) {
-                    teams[teamNameToUse[Math.floor(Math.random() * numTeams.value)]].push(teamMember[0]);
+                    teamMember.forEach(function(member, index) {
+                        teams[teamNameToUse[index]].push(member);
+                    });
                 }
+
                 for(var prop in teams) {
                     if(teams.hasOwnProperty(prop)) {
-                        console.log(teams[prop]);
                         var teamName = '<dt>Team ' + prop + '</dt>',
                             memberList = '';
                         Array.prototype.forEach.call(teams[prop], function(member) {
-                            console.log(arguments);
                             memberList += '<dd>' + member + '</dd>';
                         });
                         teamName += memberList
