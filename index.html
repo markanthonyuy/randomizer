@@ -30,7 +30,7 @@
             <label>Add Name (One per line)</label>
         </p>
         <p class="input-container">
-<textarea id="names" rows="10" cols="20">
+<textarea id="names" rows="11" cols="30">
 Tony
 Lerma
 Peter
@@ -88,13 +88,20 @@ Jahrel</textarea>
                         (teamNames.value === 'color') ? color : dota,
                     teams = {},
                     teamMember = members.value.split('\n').length ? members.value.split('\n') : [],
-                    totalTeamMember = Math.floor(teamMember.length / numTeams.value);
+                    sanitizedTeamMember = [];
+
+                // Sanitize Team Members
+                teamMember.forEach(function(member) {
+                    if(member.trim().length) sanitizedTeamMember.push(member.trim());
+                });
 
                 // Validation
-                if(teamMember.length < numTeams.value) {
+                if(sanitizedTeamMember.length < numTeams.value) {
                     alert('Team members must be greater than the number of teams');
                     return;
                 }
+
+                var totalTeamMember = Math.floor(sanitizedTeamMember.length / numTeams.value);
 
                 // Teams
                 for(var ctr = 0; ctr < numTeams.value; ctr++) {
@@ -102,14 +109,14 @@ Jahrel</textarea>
                     
                     // Team Members
                     for(var i = 0; i < totalTeamMember; i++) {
-                        var member = teamMember.splice(Math.floor(Math.random() * teamMember.length), 1);
+                        var member = sanitizedTeamMember.splice(Math.floor(Math.random() * sanitizedTeamMember.length), 1);
                         tempArr.push(member[0]);
                     }
                     teams[teamNameToUse[ctr]] = tempArr;
                 }
                 
-                if(teamMember.length) {
-                    teamMember.forEach(function(member, index) {
+                if(sanitizedTeamMember.length) {
+                    sanitizedTeamMember.forEach(function(member, index) {
                         teams[teamNameToUse[index]].push(member);
                     });
                 }
