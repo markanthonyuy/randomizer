@@ -27,7 +27,7 @@
         <hr>
         <p class="description">Enter a list of joining participant, select number of teams, team names and hit generate.</p>
         <p class="input-container">
-            <label>Add Name (One per line)</label>
+            <label>Add Name <i class="small">(One per line)</i></label>
         </p>
         <p class="input-container">
 <textarea id="names" rows="11" cols="30">
@@ -40,7 +40,7 @@ Bev
 Yuan
 Chin
 Yana
-Jahrel</textarea>
+Jahrel</textarea><span id="total-member-count"></span>
         </p>
         <p class="input-container">
             <label>Select Number of Teams: </label>
@@ -71,26 +71,37 @@ Jahrel</textarea>
     </div>
     <script>
         (function() {
-            var button = document.getElementById('generate-teams'),
+            
+            var // DOM
+                button = document.getElementById('generate-teams'),
                 numTeams = document.getElementById('num-teams'),
                 teamNames = document.getElementById('team-names'),
                 members = document.getElementById('names'),
-                generatedTeams = document.getElementById('generated-teams');
+                generatedTeams = document.getElementById('generated-teams'),
+                count = document.getElementById('total-member-count'),
+                // Team Names
+                alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
+                number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                color = ['BLUE', 'RED', 'GREEN', 'YELLOW', 'ORANGE', 'VIOLET', 'PINK', 'GRAY', 'WHITE', 'BLACK'],
+                dota = ['RAZOR', 'LINA', 'CLINKZ', 'TINY', 'ZUES', 'TUSK', 'PUCK', 'SLARK', 'LYCAN', 'AXE'];
+
+
+            members.addEventListener('keypress', function(e) {
+                if(e.keyCode === 13) {
+                    
+                }
+            });
 
             button.addEventListener('click', function() {
                 generatedTeams.innerHTML = '';
-                var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
-                    number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                    color = ['BLUE', 'RED', 'GREEN', 'YELLOW', 'ORANGE', 'VIOLET', 'PINK', 'GRAY', 'WHITE', 'BLACK'],
-                    dota = ['RAZOR', 'LINA', 'CLINKZ', 'TINY', 'ZUES', 'TUSK', 'PUCK', 'SLARK', 'LYCAN', 'AXE'],
-                    teamNameToUse = (teamNames.value === 'alphabet') ? alphabet :
+
+                var teamNameToUse = (teamNames.value === 'alphabet') ? alphabet :
                         (teamNames.value === 'number') ? number :
                         (teamNames.value === 'color') ? color : dota,
-                    teams = {},
                     teamMember = members.value.split('\n').length ? members.value.split('\n') : [],
+                    teams = {},
                     sanitizedTeamMember = [];
 
-                // Sanitize Team Members
                 teamMember.forEach(function(member) {
                     if(member.trim().length) sanitizedTeamMember.push(member.trim());
                 });
